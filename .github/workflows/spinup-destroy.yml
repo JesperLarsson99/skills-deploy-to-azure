@@ -41,17 +41,3 @@ jobs:
         if: success()
         run: |
           az webapp config container set --docker-custom-image-name nginx --docker-registry-server-password ${{secrets.CR_PAT}} --docker-registry-server-url https://${{env.IMAGE_REGISTRY_URL}} --docker-registry-server-user ${{github.actor}} --name ${{ env.AZURE_WEBAPP_NAME }} --resource-group ${{ env.AZURE_RESOURCE_GROUP }} --subscription ${{secrets.AZURE_SUBSCRIPTION_ID}}
-      
-      - name: Destroy Azure environment
-        if: success()
-        run: |
-          az webapp delete \
-            --name ${{ env.AZURE_WEBAPP_NAME }} \
-            --resource-group ${{ env.AZURE_RESOURCE_GROUP }} \
-            --subscription ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-      
-          az appservice plan delete \
-            --name ${{ env.AZURE_APP_PLAN }} \
-            --resource-group ${{ env.AZURE_RESOURCE_GROUP }} \
-            --subscription ${{ secrets.AZURE_SUBSCRIPTION_ID }} \
-            --yes
